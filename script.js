@@ -1,3 +1,6 @@
+const DARK_THEME = 'dark';
+const LIGHT_THEME = 'light';
+
 const toggleSwitch = document.querySelector('input[type="checkbox"]');
 const nav = document.getElementById('nav');
 const toggleIcon = document.getElementById('toggle-icon');
@@ -14,30 +17,33 @@ const imageMode = (color) => {
 };
 
 // Toggle Dark And Light MOde
-const toggleDarkLightMode = (isDark) => {
-  nav.style.backgroundColor = isDark
-    ? 'rgb(0 0 0 / 50%)'
-    : 'rgb(255 255 255 / 50%)';
-  textBox.style.backgroundColor = isDark
-    ? 'rgb(255 255 255 / 50%)'
-    : 'rgb(0 0 0 / 50%)';
-  toggleIcon.children[0].textContent = isDark ? 'Dark Mode' : 'Light Mode';
-  isDark
+const toggleDarkLightMode = (theme) => {
+  nav.style.backgroundColor =
+    theme === DARK_THEME ? 'rgb(0 0 0 / 50%)' : 'rgb(255 255 255 / 50%)';
+
+  textBox.style.backgroundColor =
+    theme === DARK_THEME ? 'rgb(255 255 255 / 50%)' : 'rgb(0 0 0 / 50%)';
+
+  toggleIcon.children[0].textContent =
+    theme === DARK_THEME ? 'Dark Mode' : 'Light Mode';
+
+  theme === DARK_THEME
     ? toggleIcon.children[1].classList.replace('fa-sun', 'fa-moon')
     : toggleIcon.children[1].classList.replace('fa-moon', 'fa-sun');
-  isDark ? imageMode('dark') : imageMode('light');
+
+  theme === DARK_THEME ? imageMode(DARK_THEME) : imageMode(LIGHT_THEME);
 };
 
 // Switch Theme Dynamically
 const switchTheme = (event) => {
   if (event.target.checked) {
-    document.documentElement.setAttribute('data-theme', 'dark');
-    localStorage.setItem('theme', 'dark');
-    toggleDarkLightMode(true);
+    document.documentElement.setAttribute('data-theme', DARK_THEME);
+    localStorage.setItem('theme', DARK_THEME);
+    toggleDarkLightMode(DARK_THEME);
   } else {
-    document.documentElement.setAttribute('data-theme', 'light');
-    localStorage.setItem('theme', 'light');
-    toggleDarkLightMode(false);
+    document.documentElement.setAttribute('data-theme', LIGHT_THEME);
+    localStorage.setItem('theme', LIGHT_THEME);
+    toggleDarkLightMode(LIGHT_THEME);
   }
 };
 
@@ -49,8 +55,8 @@ const currentTheme = localStorage.getItem('theme');
 if (currentTheme) {
   document.documentElement.setAttribute('data-theme', currentTheme);
 
-  if (currentTheme === 'dark') {
+  if (currentTheme === DARK_THEME) {
     toggleSwitch.checked = true;
-    toggleDarkLightMode(true);
+    toggleDarkLightMode(DARK_THEME);
   }
 }
